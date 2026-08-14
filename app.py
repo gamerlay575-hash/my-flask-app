@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = "your_very_secret_key_here"  # ကြိုက်တဲ့ စာသားတစ်ခုခု ထည့်လို့ရပါတယ်
 
 # [ပြင်ဆင်လိုက်သည့်အပိုင်း] - Render ၏ Environment Variable မှ Database URL ကို ယူသုံးခြင်း
 db_url = os.environ.get("DATABASE_URL", "sqlite:///app.db")
